@@ -1,5 +1,5 @@
 const { Telegraf } = require("telegraf");
-// const { message } = require("telegraf/filters");
+const { message } = require("telegraf/filters");
 const { weatherRequest } = require("./weather.js");
 const {
   weatherKeyboard,
@@ -37,7 +37,6 @@ bot.on("callback_query", async (ctx) => {
       weatherKeyboard
     );
   }
-  await console.log(callbackData);
 });
 
 bot.on("message", async (ctx) => {
