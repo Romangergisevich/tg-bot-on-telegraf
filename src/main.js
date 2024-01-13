@@ -16,7 +16,13 @@ bot.telegram.setMyCommands([
   { command: "weather", description: "Погода" },
 ]);
 
-bot.start((ctx) => ctx.reply("Hail, brother!"));
+bot.start(async (ctx) => {
+  const userName = ctx.update.message.from.first_name;
+  await ctx.reply(`Hail to you, ${userName}!`);
+  await ctx.reply(
+    "Ты можешь ознакомитться с моими возможностями отправив команду /info или нажав на кнопку меню слева от поля ввода сообщений"
+  );
+});
 
 bot.command("weather", async (ctx) => {
   await ctx.reply(
