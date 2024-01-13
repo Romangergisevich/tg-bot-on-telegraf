@@ -1,10 +1,12 @@
 const { Telegraf } = require("telegraf");
 const { message } = require("telegraf/filters");
 const { weatherRequest } = require("./weather.js");
+const { nbrbCourse, findCurrency } = require("./nbrb.js");
 const {
   weatherKeyboard,
-  removeKeyboard,
   infoKeyboard,
+  currencyKeyboard,
+  removeKeyboard,
 } = require("./buttons.js");
 require("dotenv").config();
 
@@ -14,13 +16,14 @@ bot.telegram.setMyCommands([
   { command: "start", description: "Начало работы" },
   { command: "info", description: "Информация о моих возможностях" },
   { command: "weather", description: "Погода" },
+  { command: "nbrb", description: "Курс валют НБРБ" },
 ]);
 
 bot.start(async (ctx) => {
   const userName = ctx.update.message.from.first_name;
   await ctx.reply(`Hail to you, ${userName}!`);
   await ctx.reply(
-    "Ты можешь ознакомитться с моими возможностями отправив команду /info или нажав на кнопку меню слева от поля ввода сообщений"
+    "Ты можешь ознакомиться с моими возможностями отправив команду /info или нажав на кнопку меню слева от поля ввода сообщений"
   );
 });
 
@@ -32,7 +35,20 @@ bot.command("weather", async (ctx) => {
 });
 
 bot.command("info", async (ctx) => {
-  await ctx.reply("Нижее представлены мои текущие возможности", infoKeyboard);
+  await ctx.reply("Ниже представлены мои текущие возможности", infoKeyboard);
+});
+
+bot.command("nbrb", async (ctx) => {
+  const course = await nbrbCourse();
+  await ctx.reply("Курс валют НБРБ на сегодняшний день");
+  await ctx.reply(
+    `НБРБ: ${JSON.stringify(course.data.slice(0, course.data.length / 2))}`
+  );
+  await ctx.reply(
+    `НБРБ: ${JSON.stringify(
+      course.data.slice(course.data.length / 2, course.data.length)
+    )}`
+  );
 });
 
 bot.on("callback_query", async (ctx) => {
@@ -41,6 +57,53 @@ bot.on("callback_query", async (ctx) => {
     await ctx.reply(
       "Выбери из представленных вариантов или просто отправь геолокацию",
       weatherKeyboard
+    );
+  }
+  if (callbackData == "nbrbCourse") {
+    await ctx.reply("Выбери интересующий тебя курс.", currencyKeyboard);
+  }
+  if (callbackData == "USD") {
+    const course = await nbrbCourse();
+    const currName = await findCurrency(course.data, "USD");
+    await ctx.reply(
+      `${JSON.stringify(currName.Cur_Scale).replace(/"/g, "")} ${JSON.stringify(
+        currName.Cur_Name
+      ).replace(/"/g, "")} - ${JSON.stringify(
+        currName.Cur_OfficialRate.toPrecision(3)
+      ).replace(/"/g, "")} Белорусских Рубля`
+    );
+  }
+  if (callbackData == "EUR") {
+    const course = await nbrbCourse();
+    const currName = await findCurrency(course.data, "EUR");
+    await ctx.reply(
+      `${JSON.stringify(currName.Cur_Scale).replace(/"/g, "")} ${JSON.stringify(
+        currName.Cur_Name
+      ).replace(/"/g, "")} - ${JSON.stringify(
+        currName.Cur_OfficialRate.toPrecision(3)
+      ).replace(/"/g, "")} Белорусских Рубля`
+    );
+  }
+  if (callbackData == "RUB") {
+    const course = await nbrbCourse();
+    const currName = await findCurrency(course.data, "RUB");
+    await ctx.reply(
+      `${JSON.stringify(currName.Cur_Scale).replace(/"/g, "")} ${JSON.stringify(
+        currName.Cur_Name
+      ).replace(/"/g, "")} - ${JSON.stringify(
+        currName.Cur_OfficialRate.toPrecision(3)
+      ).replace(/"/g, "")} Белорусских Рубля`
+    );
+  }
+  if (callbackData == "CNY") {
+    const course = await nbrbCourse();
+    const currName = await findCurrency(course.data, "CNY");
+    await ctx.reply(
+      `${JSON.stringify(currName.Cur_Scale).replace(/"/g, "")} ${JSON.stringify(
+        currName.Cur_Name
+      ).replace(/"/g, "")} - ${JSON.stringify(
+        currName.Cur_OfficialRate.toPrecision(3)
+      ).replace(/"/g, "")} Белорусских Рубля`
     );
   }
 });

@@ -1,6 +1,6 @@
 const axios = require("axios");
 require("dotenv").config();
-console.log();
+
 module.exports = {
   async weatherRequest(lat, long) {
     try {
@@ -8,7 +8,7 @@ module.exports = {
       const response = await axios.get(url);
       return response;
     } catch (e) {
-      console.log("Error while weather request", e.message);
+      console.log("Error while weather request.", e.message);
     }
   },
 };

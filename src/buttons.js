@@ -16,7 +16,22 @@ module.exports = {
       inline_keyboard: [
         [
           { text: "Погода", callback_data: "weather" },
-          { text: "empty", callback_data: "empty" },
+          { text: "Курс валют НБРБ", callback_data: "nbrbCourse" },
+        ],
+      ],
+    }),
+  },
+
+  currencyKeyboard: {
+    reply_markup: JSON.stringify({
+      inline_keyboard: [
+        [
+          { text: "Курс Доллара США (USD)", callback_data: "USD" },
+          { text: "Курс Евро (EUR)", callback_data: "EUR" },
+        ],
+        [
+          { text: "Курс Рубля (RUB)", callback_data: "RUB" },
+          { text: "Курс Китайских юаней (CNY)", callback_data: "CNY" },
         ],
       ],
     }),
