@@ -5,7 +5,6 @@ module.exports = {
     try {
       const url = "https://api.nbrb.by/exrates/rates?periodicity=0";
       const response = await axios.get(url);
-    //   console.log(response);
       return response;
     } catch (e) {
       console.log("Error while nbrb course request.", e.message);

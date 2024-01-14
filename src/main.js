@@ -2,6 +2,8 @@ const { Telegraf } = require("telegraf");
 const { message } = require("telegraf/filters");
 const { weatherRequest } = require("./weather.js");
 const { nbrbCourse, findCurrency } = require("./nbrb.js");
+const moment = require("moment");
+require("moment/locale/ru");
 const {
   weatherKeyboard,
   infoKeyboard,
@@ -40,15 +42,8 @@ bot.command("info", async (ctx) => {
 
 bot.command("nbrb", async (ctx) => {
   const course = await nbrbCourse();
-  await ctx.reply("Курс валют НБРБ на сегодняшний день");
-  await ctx.reply(
-    `НБРБ: ${JSON.stringify(course.data.slice(0, course.data.length / 2))}`
-  );
-  await ctx.reply(
-    `НБРБ: ${JSON.stringify(
-      course.data.slice(course.data.length / 2, course.data.length)
-    )}`
-  );
+  const date = await moment(course.headers.date).locale("ru").format("LLLL");
+  await ctx.reply(`Курсы валют на ${date}`, currencyKeyboard);
 });
 
 bot.on("callback_query", async (ctx) => {
