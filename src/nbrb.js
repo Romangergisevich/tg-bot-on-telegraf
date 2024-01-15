@@ -1,9 +1,10 @@
 const axios = require("axios");
+require("dotenv").config();
 
 module.exports = {
   async nbrbCourse() {
     try {
-      const url = "https://api.nbrb.by/exrates/rates?periodicity=0";
+      const url = process.env.NBRB_URL;
       const response = await axios.get(url);
       return response;
     } catch (e) {

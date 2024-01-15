@@ -48,6 +48,8 @@ bot.command("nbrb", async (ctx) => {
 
 bot.on("callback_query", async (ctx) => {
   const callbackData = ctx.update.callback_query.data;
+  const messageId = ctx.update.callback_query.message.message_id;
+  const chatId = ctx.chat.id;
   if (callbackData == "weather") {
     await ctx.reply(
       "Выбери из представленных вариантов или просто отправь геолокацию",
@@ -55,7 +57,15 @@ bot.on("callback_query", async (ctx) => {
     );
   }
   if (callbackData == "nbrbCourse") {
-    await ctx.reply("Выбери интересующий тебя курс.", currencyKeyboard);
+    const course = await nbrbCourse();
+    const date = await moment(course.headers.date).locale("ru").format("LLLL");
+    await ctx.telegram.editMessageText(
+      chatId,
+      messageId,
+      0,
+      `Курсы валют на ${date}`,
+      currencyKeyboard
+    );
   }
   if (callbackData == "USD") {
     const course = await nbrbCourse();
@@ -99,6 +109,15 @@ bot.on("callback_query", async (ctx) => {
       ).replace(/"/g, "")} - ${JSON.stringify(
         currName.Cur_OfficialRate.toPrecision(3)
       ).replace(/"/g, "")} Белорусских Рубля`
+    );
+  }
+  if (callbackData == "step_back") {
+    await ctx.telegram.editMessageText(
+      chatId,
+      messageId,
+      0,
+      `Ниже представлены мои текущие возможности`,
+      infoKeyboard
     );
   }
 });

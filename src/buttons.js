@@ -33,6 +33,7 @@ module.exports = {
           { text: "Курс Рубля (RUB)", callback_data: "RUB" },
           { text: "Курс Китайских юаней (CNY)", callback_data: "CNY" },
         ],
+        [{ text: "Назад", callback_data: "step_back" }],
       ],
     }),
   },
