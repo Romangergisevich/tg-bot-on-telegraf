@@ -1,0 +1,11 @@
+{
+    //editor settings
+    "editor.fontFamily": "Fira Code, Consolas, 'Courier New', monospace",
+    "editor.fontLigatures": true,
+    "editor.fontWeight": "400",
+  
+    //terminal settings
+    "terminal.integrated.fontFamily": "Fira Code",
+    "terminal.integrated.fontWeight": "400"
+  }
+  
